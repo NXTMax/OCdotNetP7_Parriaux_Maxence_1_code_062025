@@ -1,7 +1,30 @@
-namespace Dot.Net.WebApi.Controllers
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace P7CreateRestApi.Domain
 {
     public class RuleName
     {
-        // TODO: Map columns in data table RULENAME with corresponding fields
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [StringLength(125)]
+        public string? Name { get; set; }
+
+        [StringLength(125)]
+        public string? Description { get; set; }
+
+        [StringLength(125)]
+        public string? Json { get; set; }
+
+        [StringLength(512)]
+        public string? Template { get; set; }
+
+        [StringLength(125)]
+        public string? SqlStr { get; set; }
+
+        [StringLength(125)]
+        public string? SqlPart { get; set; }
     }
 }
