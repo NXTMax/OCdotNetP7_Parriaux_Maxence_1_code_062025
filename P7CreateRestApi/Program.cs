@@ -1,4 +1,4 @@
-using Dot.Net.WebApi.Data;
+using P7CreateRestApi.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
