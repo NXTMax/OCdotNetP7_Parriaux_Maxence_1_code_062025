@@ -1,5 +1,12 @@
-using P7CreateRestApi.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using P7CreateRestApi.Data;
+using P7CreateRestApi.Models;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -7,53 +14,95 @@ namespace P7CreateRestApi.Controllers
     [Route("[controller]")]
     public class TradeController : ControllerBase
     {
-        // TODO: Inject Trade service
+        private readonly LocalDbContext _context;
 
-        [HttpGet]
-        [Route("list")]
-        public IActionResult Home()
+        public TradeController(LocalDbContext context)
         {
-            // TODO: find all Trade, add to model
-            return Ok();
+            _context = context;
         }
 
+        // GET: /Trade
         [HttpGet]
-        [Route("add")]
-        public IActionResult AddTrade([FromBody]Trade trade)
+        public async Task<ActionResult<IEnumerable<Trade>>> GetTrades()
         {
-            return Ok();
+            return await _context.Trades.ToListAsync();
         }
 
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody]Trade trade)
+        // GET: /Trade/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Trade>> GetTrade(int id)
         {
-            // TODO: check data valid and save to db, after saving return Trade list
-            return Ok();
+            var trade = await _context.Trades.FindAsync(id);
+
+            if (trade == null)
+            {
+                return NotFound();
+            }
+
+            return trade;
         }
 
-        [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        // PUT: /Trade/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTrade(int id, Trade trade)
         {
-            // TODO: get Trade by Id and to model then show to the form
-            return Ok();
+            if (id != trade.TradeId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(trade).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TradeExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
+        // POST: /Trade
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateTrade(int id, [FromBody] Trade trade)
+        public async Task<ActionResult<Trade>> PostTrade(Trade trade)
         {
-            // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Ok();
+            _context.Trades.Add(trade);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetTrade", new { id = trade.TradeId }, trade);
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public IActionResult DeleteTrade(int id)
+        // DELETE: /Trade/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTrade(int id)
         {
-            // TODO: Find Trade by Id and delete the Trade, return to Trade list
-            return Ok();
+            var trade = await _context.Trades.FindAsync(id);
+            if (trade == null)
+            {
+                return NotFound();
+            }
+
+            _context.Trades.Remove(trade);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool TradeExists(int id)
+        {
+            return _context.Trades.Any(e => e.TradeId == id);
         }
     }
 }
