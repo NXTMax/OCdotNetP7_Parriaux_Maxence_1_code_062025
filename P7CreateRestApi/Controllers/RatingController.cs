@@ -1,5 +1,13 @@
-using P7CreateRestApi.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using P7CreateRestApi.Data;
+using P7CreateRestApi.Models;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -7,53 +15,95 @@ namespace P7CreateRestApi.Controllers
     [Route("[controller]")]
     public class RatingController : ControllerBase
     {
-        // TODO: Inject Rating service
+        private readonly LocalDbContext _context;
 
-        [HttpGet]
-        [Route("list")]
-        public IActionResult Home()
+        public RatingController(LocalDbContext context)
         {
-            // TODO: find all Rating, add to model
-            return Ok();
+            _context = context;
         }
 
+        // GET: /Rating
         [HttpGet]
-        [Route("add")]
-        public IActionResult AddRatingForm([FromBody]Rating rating)
+        public async Task<ActionResult<IEnumerable<Rating>>> GetRatings()
         {
-            return Ok();
+            return await _context.Ratings.ToListAsync();
         }
 
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody]Rating rating)
+        // GET: /Rating/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Rating>> GetRating(int id)
         {
-            // TODO: check data valid and save to db, after saving return Rating list
-            return Ok();
+            var rating = await _context.Ratings.FindAsync(id);
+
+            if (rating == null)
+            {
+                return NotFound();
+            }
+
+            return rating;
         }
 
-        [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        // PUT: /Rating/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutRating(int id, Rating rating)
         {
-            // TODO: get Rating by Id and to model then show to the form
-            return Ok();
+            if (id != rating.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(rating).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RatingExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
+        // POST: /Rating
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateRating(int id, [FromBody] Rating rating)
+        public async Task<ActionResult<Rating>> PostRating(Rating rating)
         {
-            // TODO: check required fields, if valid call service to update Rating and return Rating list
-            return Ok();
+            _context.Ratings.Add(rating);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetRating", new { id = rating.Id }, rating);
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public IActionResult DeleteRating(int id)
+        // DELETE: /Rating/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRating(int id)
         {
-            // TODO: Find Rating by Id and delete the Rating, return to Rating list
-            return Ok();
+            var rating = await _context.Ratings.FindAsync(id);
+            if (rating == null)
+            {
+                return NotFound();
+            }
+
+            _context.Ratings.Remove(rating);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool RatingExists(int id)
+        {
+            return _context.Ratings.Any(e => e.Id == id);
         }
     }
 }

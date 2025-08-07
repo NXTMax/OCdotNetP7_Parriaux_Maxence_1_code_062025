@@ -1,5 +1,12 @@
-using P7CreateRestApi.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using P7CreateRestApi.Data;
+using P7CreateRestApi.Models;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -7,34 +14,95 @@ namespace P7CreateRestApi.Controllers
     [Route("[controller]")]
     public class BidListController : ControllerBase
     {
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody] BidList bidList)
+        private readonly LocalDbContext _context;
+
+        public BidListController(LocalDbContext context)
         {
-            // TODO: check data valid and save to db, after saving return bid list
-            return Ok();
+            _context = context;
         }
 
+        // GET: /BidList
         [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        public async Task<ActionResult<IEnumerable<BidList>>> GetBidLists()
         {
-            return Ok();
+            return await _context.BidLists.ToListAsync();
         }
 
+        // GET: /BidList/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BidList>> GetBidList(int id)
+        {
+            var bidList = await _context.BidLists.FindAsync(id);
+
+            if (bidList == null)
+            {
+                return NotFound();
+            }
+
+            return bidList;
+        }
+
+        // PUT: /BidList/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutBidList(int id, BidList bidList)
+        {
+            if (id != bidList.BidListId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(bidList).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BidListExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: /BidList
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateBid(int id, [FromBody] BidList bidList)
+        public async Task<ActionResult<BidList>> PostBidList(BidList bidList)
         {
-            // TODO: check required fields, if valid call service to update Bid and return list Bid
-            return Ok();
+            _context.BidLists.Add(bidList);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetBidList", new { id = bidList.BidListId }, bidList);
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public IActionResult DeleteBid(int id)
+        // DELETE: /BidList/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBidList(int id)
         {
-            return Ok();
+            var bidList = await _context.BidLists.FindAsync(id);
+            if (bidList == null)
+            {
+                return NotFound();
+            }
+
+            _context.BidLists.Remove(bidList);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool BidListExists(int id)
+        {
+            return _context.BidLists.Any(e => e.BidListId == id);
         }
     }
 }
