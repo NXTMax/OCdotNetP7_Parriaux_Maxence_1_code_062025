@@ -60,7 +60,9 @@ namespace P7CreateRestApi.Models
         public DateTime? RevisionDate { get; set; }
 
         [StringLength(125)]
-        public string? DealName { get; set; }        [StringLength(125)]
+        public string? DealName { get; set; }
+        
+        [StringLength(125)]
         public string? DealType { get; set; }
 
         [StringLength(125)]
