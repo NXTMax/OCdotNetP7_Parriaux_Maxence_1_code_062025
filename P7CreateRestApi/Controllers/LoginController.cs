@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using P7CreateRestApi.Models;
+using P7CreateRestApi.Dtos;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -9,7 +9,7 @@ namespace P7CreateRestApi.Controllers
     {             
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
             //TODO: implement the UserManager from Identity to validate User and return a security token.
             return Unauthorized();

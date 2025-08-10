@@ -1,6 +1,6 @@
-﻿namespace P7CreateRestApi.Models
+﻿namespace P7CreateRestApi.Dtos
 {
-    public class LoginModel
+    public class LoginDto
     {
         // TODO: implement properties needeed for login model.
     }

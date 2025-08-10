@@ -1,4 +1,4 @@
-using P7CreateRestApi.Domain;
+using P7CreateRestApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace P7CreateRestApi.Controllers
