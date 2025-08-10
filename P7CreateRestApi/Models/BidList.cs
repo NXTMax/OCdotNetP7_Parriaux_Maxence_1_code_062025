@@ -1,13 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace P7CreateRestApi.Domain
+namespace P7CreateRestApi.Models
 {
-    public class Trade
+    public class BidList
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int TradeId { get; set; }
+        public int BidListId { get; set; }
 
         [Required]
         [StringLength(30)]
@@ -15,24 +15,27 @@ namespace P7CreateRestApi.Domain
 
         [Required]
         [StringLength(30)]
-        public string Type { get; set; } = string.Empty;
+        public string BidType { get; set; } = string.Empty;
 
         [Column(TypeName = "decimal(10,2)")]
-        public decimal? BuyQuantity { get; set; }
+        public decimal? BidQuantity { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
-        public decimal? SellQuantity { get; set; }
+        public decimal? AskQuantity { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
-        public decimal? BuyPrice { get; set; }
+        public decimal? Bid { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
-        public decimal? SellPrice { get; set; }
+        public decimal? Ask { get; set; }
 
         [StringLength(125)]
         public string? Benchmark { get; set; }
 
-        public DateTime? TradeDate { get; set; }
+        public DateTime? BidListDate { get; set; }
+
+        [StringLength(125)]
+        public string? Commentary { get; set; }
 
         [StringLength(125)]
         public string? Security { get; set; }
@@ -57,9 +60,7 @@ namespace P7CreateRestApi.Domain
         public DateTime? RevisionDate { get; set; }
 
         [StringLength(125)]
-        public string? DealName { get; set; }
-
-        [StringLength(125)]
+        public string? DealName { get; set; }        [StringLength(125)]
         public string? DealType { get; set; }
 
         [StringLength(125)]

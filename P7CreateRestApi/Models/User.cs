@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace P7CreateRestApi.Domain
+namespace P7CreateRestApi.Models
 {
     public class User
     {
