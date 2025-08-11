@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using P7CreateRestApi.Models;
 
 namespace P7CreateRestApi.Data
 {
-    public class LocalDbContext : DbContext
+    public class LocalDbContext : IdentityDbContext<User>
     {
         public LocalDbContext(DbContextOptions<LocalDbContext> options) : base(options) { }
 
@@ -12,7 +13,6 @@ namespace P7CreateRestApi.Data
             base.OnModelCreating(builder);
         }
 
-        public DbSet<User> Users { get; set; } = null!;
         public DbSet<BidList> BidLists { get; set; } = null!;
         public DbSet<CurvePoint> CurvePoints { get; set; } = null!;
         public DbSet<Rating> Ratings { get; set; } = null!;
