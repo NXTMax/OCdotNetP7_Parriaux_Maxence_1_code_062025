@@ -2,5 +2,9 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs
-/P7CreateRestApi/.vs
+.vs/
+*/*.sln
+
+bin/
+obj/
+*.csproj.user
