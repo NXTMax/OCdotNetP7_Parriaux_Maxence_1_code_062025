@@ -9,7 +9,7 @@ using P7CreateRestApi.Data;
 
 #nullable disable
 
-namespace P7CreateRestApi.Migrations
+namespace P7CreateRestApi.Data.Migrations
 {
     [DbContext(typeof(LocalDbContext))]
     [Migration("20250630094251_InitModel")]
