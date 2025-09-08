@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using P7CreateRestApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using P7CreateRestApi.Interfaces;
+using P7CreateRestApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -41,6 +43,7 @@ builder.Services.AddAuthentication(options =>
                 System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])),
         };
     });
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 

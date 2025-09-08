@@ -1,7 +1,13 @@
-﻿namespace P7CreateRestApi.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace P7CreateRestApi.Dtos
 {
     public class LoginDto
     {
-        // TODO: implement properties needeed for login model.
+        [Required]
+        public string Username { get; set; }
+
+        [Required]
+        public string Password { get; set; }
     }
 }
