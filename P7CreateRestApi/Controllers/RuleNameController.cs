@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using P7CreateRestApi.Data;
 using P7CreateRestApi.Models;
 
@@ -12,6 +13,7 @@ namespace P7CreateRestApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class RuleNameController : ControllerBase
     {
         private readonly LocalDbContext _context;

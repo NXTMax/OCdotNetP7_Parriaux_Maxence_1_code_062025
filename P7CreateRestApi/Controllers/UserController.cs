@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using P7CreateRestApi.Models;
 using P7CreateRestApi.Dtos;
 using P7CreateRestApi.Mappers;
@@ -9,6 +10,7 @@ namespace P7CreateRestApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "Admin")]
     public class UserController(UserManager<User> userManager) : ControllerBase
     {
         [HttpGet]

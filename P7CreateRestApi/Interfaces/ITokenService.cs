@@ -4,6 +4,6 @@ namespace P7CreateRestApi.Interfaces
 {
     public interface ITokenService
     {
-        string CreateToken(User user);
+        Task<string> CreateTokenAsync(User user);
     }
 }

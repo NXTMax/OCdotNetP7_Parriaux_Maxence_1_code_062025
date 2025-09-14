@@ -28,7 +28,7 @@ namespace P7CreateRestApi.Controllers
             if (!pwdCheck.Succeeded)
                 return Unauthorized("Invalid credentials");
 
-            var token = tokenService.CreateToken(user);
+            var token = await tokenService.CreateTokenAsync(user);
             return Ok(new { token });
         }            
     }
