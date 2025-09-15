@@ -7,7 +7,7 @@ namespace P7CreateRestApi.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int BidListId { get; set; }
+        public int BidListId { get; private set; }
 
         [Required]
         [StringLength(30)]

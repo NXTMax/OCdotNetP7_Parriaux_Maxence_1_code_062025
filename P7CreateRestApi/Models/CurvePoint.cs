@@ -7,7 +7,7 @@ namespace P7CreateRestApi.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
         public byte? CurveId { get; set; }
 
