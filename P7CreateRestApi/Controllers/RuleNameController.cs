@@ -50,9 +50,9 @@ namespace P7CreateRestApi.Controllers
         public async Task<IActionResult> PutRuleName(int id, RuleName ruleName)
         {
             if (id != ruleName.Id)
-            {
                 return BadRequest();
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             _context.Entry(ruleName).State = EntityState.Modified;
 
@@ -80,6 +80,9 @@ namespace P7CreateRestApi.Controllers
         [HttpPost]
         public async Task<ActionResult<RuleName>> PostRuleName(RuleName ruleName)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             _context.RuleNames.Add(ruleName);
             await _context.SaveChangesAsync();
 

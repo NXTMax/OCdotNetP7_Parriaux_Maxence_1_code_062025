@@ -50,9 +50,9 @@ namespace P7CreateRestApi.Controllers
         public async Task<IActionResult> PutTrade(int id, Trade trade)
         {
             if (id != trade.TradeId)
-            {
                 return BadRequest();
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             _context.Entry(trade).State = EntityState.Modified;
 
@@ -80,6 +80,9 @@ namespace P7CreateRestApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Trade>> PostTrade(Trade trade)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             _context.Trades.Add(trade);
             await _context.SaveChangesAsync();
 

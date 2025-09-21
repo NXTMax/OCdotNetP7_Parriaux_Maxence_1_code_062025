@@ -51,9 +51,9 @@ namespace P7CreateRestApi.Controllers
         public async Task<IActionResult> PutRating(int id, Rating rating)
         {
             if (id != rating.Id)
-            {
                 return BadRequest();
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             _context.Entry(rating).State = EntityState.Modified;
 
@@ -81,6 +81,9 @@ namespace P7CreateRestApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Rating>> PostRating(Rating rating)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             _context.Ratings.Add(rating);
             await _context.SaveChangesAsync();
 

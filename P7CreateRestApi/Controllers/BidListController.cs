@@ -50,9 +50,9 @@ namespace P7CreateRestApi.Controllers
         public async Task<IActionResult> PutBidList(int id, BidList bidList)
         {
             if (id != bidList.BidListId)
-            {
                 return BadRequest();
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             _context.Entry(bidList).State = EntityState.Modified;
 
@@ -80,6 +80,9 @@ namespace P7CreateRestApi.Controllers
         [HttpPost]
         public async Task<ActionResult<BidList>> PostBidList(BidList bidList)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             _context.BidLists.Add(bidList);
             await _context.SaveChangesAsync();
 
