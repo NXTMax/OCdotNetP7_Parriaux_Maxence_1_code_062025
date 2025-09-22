@@ -8,6 +8,7 @@ using P7CreateRestApi.Data;
 using P7CreateRestApi.Interfaces;
 using P7CreateRestApi.Models;
 using P7CreateRestApi.Services;
+using P7CreateRestApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -93,6 +94,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Log authorized REST actions
+app.UseMiddleware<UsageLogMiddleware>();
 
 app.MapControllers();
 
