@@ -50,9 +50,9 @@ namespace P7CreateRestApi.Controllers
         public async Task<IActionResult> PutCurvePoint(int id, CurvePoint curvePoint)
         {
             if (id != curvePoint.Id)
-            {
                 return BadRequest();
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             _context.Entry(curvePoint).State = EntityState.Modified;
 
@@ -80,6 +80,9 @@ namespace P7CreateRestApi.Controllers
         [HttpPost]
         public async Task<ActionResult<CurvePoint>> PostCurvePoint(CurvePoint curvePoint)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             _context.CurvePoints.Add(curvePoint);
             await _context.SaveChangesAsync();
 
