@@ -7,7 +7,7 @@ namespace P7CreateRestApi.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int TradeId { get; private set; }
+        public int TradeId { get; set; }
 
         [Required]
         [StringLength(30)]
